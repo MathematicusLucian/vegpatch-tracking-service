@@ -32,4 +32,7 @@ board.on("ready", () => {
     PLANTS_CONFIG.forEach(PLANT => {
         addPlantState(PLANT);
     });
+   board.on("exit", () => {
+      led.off();
+    });
 });
