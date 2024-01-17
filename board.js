@@ -32,7 +32,31 @@ board.on("ready", () => {
     PLANTS_CONFIG.forEach(PLANT => {
         addPlantState(PLANT);
     });
-   board.on("exit", () => {
+    dry.on();
+
+    /*
+    Wet, and soil sensor value < 350, 
+    toggle state of both sensors; 
+    Dry, and soil sensor value > 350, 
+    toggle state of both sensors.
+    */
+
+    plantsState.forEach(plantState => {
+
+        plantState.soilSensor.on("change", () => {
+
+            if (plantState.wetState.isOn && plantState.soilSensor.value < 350) {
+                plantState.bothMoistureStates.toggle();
+            } else {
+                if (plantState.dryState.isOn && plantState.soilSensor.value > 350) {
+                    plantState.bothMoistureStates.toggle();
+                }
+            }
+        });
+
+    });
+
+    board.on("exit", () => {
       led.off();
     });
 });
